@@ -18,14 +18,10 @@ let getDataFromServer = (url, method, callback, error) => {
 	$.ajax({
 		url: url,
 		type: method,
-		complete: function (xhr, textStatus) {
-			//called when complete
-		},
 		success: function (response) {
 			callback(response)
 		},
 		error: function (err) {
-			//called when there is an error
 			error(err)
 		}
 	});
