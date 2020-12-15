@@ -129,7 +129,7 @@ let showDataInApp = () => {
 				'taxTokenDate',
 				'no-taxtoken-date'
 			)
-		}, (error) => console.log(error))
+		}, (error) => console.error(error))
 }
 
 
