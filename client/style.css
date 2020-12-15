@@ -1,0 +1,40 @@
+body{
+	margin:0;
+	padding:10px;
+}
+
+.app{
+	width:50%;
+	margin:10px auto;
+	text-align: center;
+}
+
+.date-panel{
+	margin-top:100px;
+}
+
+.no-date{
+	color:red;
+}
+
+.generate-report{
+	border:none;
+	border-radius: 10px;
+	background:#f50057;
+	padding:10px;
+	color:#fff;
+	cursor: pointer;
+}
+
+.generate-report:focus{
+	outline:none;
+}
+
+.result{
+	display: none;
+}
+
+.fitness,.root-permit,.tax-token{
+	color :red;
+	padding:10px
+}
