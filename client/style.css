@@ -13,7 +13,7 @@ body{
 	margin-top:100px;
 }
 
-.no-date{
+.no-rootpermit-date,.no-taxtoken-date,.no-fitness-date{
 	color:red;
 }
 
