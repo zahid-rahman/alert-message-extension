@@ -1,6 +1,5 @@
 let isDateExpired = (currentDate, expireDate) => {
 	let totalDays = expireDate.diff(currentDate, 'days')
-	console.log(totalDays)
 	if (totalDays <= 15) {
 		return {
 			isExpired: true,
@@ -98,7 +97,7 @@ let showAlertMessageInApp = () => {
 				$('.result').show()
 			}
 
-		}, error => console.log(error))
+		}, error => console.error(error))
 }
 
 let showDataInApp = () => {
@@ -135,12 +134,10 @@ let showDataInApp = () => {
 
 
 $(document).ready(() => {
-	$('button').click(function (event) {
+	$('.generate-report').click(function (event) {
 		event.preventDefault()
 		showAlertMessageInApp()
 		
 	})
-
 	showDataInApp()
-
 })
