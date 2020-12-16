@@ -21,8 +21,6 @@ app.get('/expireDates',(req,res) => {
 	res.json(dataJson)
 })
 
-app.get('/vehiclesExpireDate')
-
 let port = process.env.PORT
 app.listen(port,() => {
 	console.log(`this api server running on port ${port}`)
