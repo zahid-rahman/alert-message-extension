@@ -1,5 +1,6 @@
 let isDateExpired = (currentDate, expireDate) => {
-	let totalDays = expireDate.diff(currentDate, 'days')
+	let formattedExpireDate = moment(expireDate)
+	let totalDays = formattedExpireDate.diff(currentDate, 'days')
 	if (totalDays <= 15) {
 		return {
 			isExpired: true,
@@ -13,17 +14,23 @@ let isDateExpired = (currentDate, expireDate) => {
 	}
 }
 
-let getDataFromServer = (url, method, callback, error) => {
-	$.ajax({
-		url: url,
-		type: method,
-		success: function (response) {
-			callback(response)
-		},
-		error: function (err) {
-			error(err)
-		}
-	});
+let getDataFromServer = (url, httpMethod , headers, data, callbackSucess, callbackError) => {
+	let objectParams = {}
+	objectParams['url'] = url
+	objectParams['type'] = httpMethod
+	if(headers != null || headers != undefined){
+		objectParams['headers'] = headers
+	}
+	if(data != null || data != undefined){
+		objectParams['data'] = data
+	}
+	objectParams['success'] = function (response){
+		callbackSucess(response)
+	}
+	objectParams['error'] = function (error){
+		callbackError(error)
+	}
+	$.ajax(objectParams);
 }
 
 let showExpireAlertMessage = (alertPromptMessage, expireDate, textAlertMessage, className) => {
@@ -43,6 +50,8 @@ let showAlertMessageInApp = () => {
 	getDataFromServer(
 		`http://localhost:5660/expireDates`,
 		`GET`,
+		null,
+		null,
 		(response) => {
 			let {
 				rootPermitExpireDate,
@@ -51,20 +60,14 @@ let showAlertMessageInApp = () => {
 			} = response
 
 			let currentDate = moment().format("YYYY-MM-DD")
-
-			let rootPermitDate = moment(rootPermitExpireDate)
-			let isRootPermitExpire = isDateExpired(currentDate, rootPermitDate)
-
-			let taxTokenDate = moment(taxTokenExpireDate)
-			let isTaxTokenExpire = isDateExpired(currentDate, taxTokenDate)
-
-			let fitnessDate = moment(fitnessExpireDate)
-			let isFitnessExpire = isDateExpired(currentDate, fitnessDate)
+			let isRootPermitExpire = isDateExpired(currentDate, rootPermitExpireDate)
+			let isTaxTokenExpire = isDateExpired(currentDate, taxTokenExpireDate)
+			let isFitnessExpire = isDateExpired(currentDate, fitnessExpireDate)
 
 			if (isRootPermitExpire.isExpired === true) {
 				showExpireAlertMessage(
 					`your root permit papers about to expired on `,
-					rootPermitDate,
+					rootPermitExpireDate,
 					`${isRootPermitExpire.totalDays} days left to expire your root permit papers`,
 					`root-permit`
 				)
@@ -76,7 +79,7 @@ let showAlertMessageInApp = () => {
 			if (isTaxTokenExpire.isExpired === true) {
 				showExpireAlertMessage(
 					`your tax token papers about to expired on `,
-					taxTokenDate,
+					taxTokenExpireDate,
 					`${isTaxTokenExpire.totalDays} days left to expire your tax token papers`,
 					`tax-token`
 				)
@@ -88,7 +91,7 @@ let showAlertMessageInApp = () => {
 			if (isFitnessExpire.isExpired === true) {
 				showExpireAlertMessage(
 					`your vehicle fitness papers about to expired on `,
-					fitnessDate,
+					fitnessExpireDate,
 					`${isFitnessExpire.totalDays} days left to expire your vehicles fitness papers`,
 					`fitness`
 				)
@@ -104,6 +107,8 @@ let showDataInApp = () => {
 	getDataFromServer(
 		`http://localhost:5660/expireDates`,
 		'GET',
+		null,
+		null,
 		(response) => {
 			let {
 				rootPermitExpireDate,
@@ -137,7 +142,7 @@ $(document).ready(() => {
 	$('.generate-report').click(function (event) {
 		event.preventDefault()
 		showAlertMessageInApp()
-		
+
 	})
 	showDataInApp()
 })
